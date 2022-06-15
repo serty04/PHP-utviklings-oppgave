@@ -1,0 +1,10 @@
+table, th, td {
+    border: 1px solid black;
+    border-radius: 10px;
+}
+.table {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+  }
