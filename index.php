@@ -1,37 +1,54 @@
 <!DOCTYPE html>
 <?php
+    // Create connection
+$conn = new mysqli($username, $password, $dbname, $servername);
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error); // Hvis tilkoblingen feilet
+}
+
+$sql = "SELECT id, navn, bilde, mobil, Jobb, epost, Stilling, avdeling FROM info_ansatte"; // Hva vi skal hente
+$result = $conn->query($sql); // Henter resultatet
+
+
+
+$conn->close(); // Lukke tilkoblingen til SQL server
+?>
+
+<?php
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "php_oppgave";
-$ansatte_id = "ansatte_id";
-$ansatte_navn = "ansatte_navn";
-$ansatte_mobil = "ansatte_mobil";
-$ansatte_jobb = "ansatte_jobb";
-$ansatte_epost = "ansatte_epost";
-$ansatte_stilling = "ansatte_stilling";
-$ansatte_avdeling = "ansatte_avdeling";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-  die("Connection failed: " . $conn->connect_error);
-}
 
-$sql = "INSERT INTO info_ansatte (navn, mobil, stilling)
-VALUES ('John', 'Doe', 'john')";
 
-if ($conn->query($sql) === TRUE) {
-  echo "New record created successfully";
-} else {
-  echo "Error: " . $sql . "<br>" . $conn->error;
-}
 
-$conn->close();
+$sql = "INSERT INTO info_ansatte (navn, mobil, stilling)";
 ?>
 
+<?php
+ // loop som kjører til slutten av raden i mysql
+  while($rows=$result->fetch_assoc())
+  {
+      $bilde = $rows ['bilde'];
+      $brukerid = $rows['id'];
+      $navn = $rows['navn'];
+      $mobil = $rows['mobil'];
+      $jobb = $rows['jobb'];
+      $epost = $rows['epost'];
+      $avdeling = $rows['avdeling']; 
+      $stilling = $rows['stilling'];
 
+
+
+
+
+
+?>
+<?php
+  }
+?>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -42,40 +59,25 @@ $conn->close();
 </head>
 <body>
 
-  <div id="innpakning">
-        <div id="header">
+<tr>
+    <!-- henter data fra hver rad -->
 
-        </div>
-        <div id="innhold">
-            <div id="tabel">
-              <table>
-                <tr>
-                  <th class="d-flex flex-column" id= "ansatte_id">id</th>
-                  <th id= "ansatte_navn">navn</th>
-                  <th id= "ansatte_mobil">mobil</th>
-                  <th id= "ansatte_jobb">jobb</th>
-                  <th id= "ansatte_epost">e-post</th>
-                  <th id= "ansatte_stilling">stilling</th>
-                  <th id= "ansatte_avdelin">avdeling</th>
-                </tr>
-                <tr>
-                  <td>Alfreds Futterkiste</td>
-                  <td>Maria Anders</td>
-                  <td>Germany</td>
-                </tr>
-                <tr>
-                  <td>Centro comercial Moctezuma</td>
-                  <td>Francisco Chang</td>
-                  <td>Mexico</td>
-                </tr>
-              </table>
-                
-                
-            </div>
-        </div>
-        <div id="footer">
+    <td><?php echo "<img src=\"$bilde\" width=\"100px\" height=\"100px\">";?></td>
+    <td><?php echo $rows['id'];?></td>
+    <td><?php echo $rows['navn'];?></td>
+    <td><?php echo $rows['mobil'];?></td>
+    <td><?php echo $rows['jobb'];?></td>
+    <td><?php echo $rows['epost'];?></td>
+    <td><?php echo $rows['stilling'];?></td>
+    <td><?php echo $rows['avdeling'];?></td>
 
-        </div>
-  </div>
+
+
+
+</tr>
+
+<form action ="add.php">
+                <input type="submit" value="legg til nye ansatte" />
+                </form>
 </body>
 
